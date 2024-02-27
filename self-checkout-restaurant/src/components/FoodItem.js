@@ -3,7 +3,7 @@ import foodImage from '../Images/food.png';
 
 const FoodItem = ({ name, weight, nutrition }) => {
   const [isTrayOnWeightingMachine, setTrayOnWeightingMachine] = useState(false);
-
+  const [calories, setCalories] = useState(0);
   // Simulate checking if the tray is on the weighing machine on the later phase
   const checkWeightingMachine = () => {
     //will be Performing the actual logic here later on after we have hardware and other tools (e.g., integrated with hardware, data)
@@ -15,6 +15,14 @@ const FoodItem = ({ name, weight, nutrition }) => {
 
   useEffect(() => {
     checkWeightingMachine();
+
+  // Calculate total calories based on protein, carbs, and fat
+  const proteinCalories = nutrition.protein * 4;
+  const carbsCalories = nutrition.carbs * 4;
+  const fatCalories = nutrition.fat * 9;
+
+  const totalCalories = proteinCalories + carbsCalories + fatCalories;
+  setCalories(totalCalories);
   }, []); 
 
   return (
@@ -25,16 +33,15 @@ const FoodItem = ({ name, weight, nutrition }) => {
           <div>
             <img src={foodImage} alt={name} style={{ maxWidth: '30%', height: '10%' }} />
           </div>
-          <p>Weight: {weight} grams</p>
-          <p>Nutritional Values:</p>
           
           <ul>
-            <li>Total Calories: {nutrition.calories} kCal</li>
-            <li>Protein: {nutrition.protein} grams</li>
-            <li>Carbs: {nutrition.carbs} grams</li>
-            <li>Fat: {nutrition.fat} grams</li>
+            <li>Protein: {nutrition.protein} grams ({nutrition.protein * 4} calories)</li>
+            <li>Carbs: {nutrition.carbs} grams ({nutrition.carbs * 4} calories)</li>
+            <li>Fat: {nutrition.fat} grams ({nutrition.fat * 9} calories)</li>
             <li>Salt: {nutrition.salt} grams</li>
-            
+
+            <p>Total Weight: {weight} grams</p>
+            <p>Total Nutritional Values: {calories} kCal</p>
           </ul>
         </>
       ) : (
